@@ -1,14 +1,25 @@
 import http.client
 import json
 
-class Validator:
+class Networker:
+
+	groupNonce = "Null"
+	database = {}
 
 	def __init__(self):
-		print("Created")
+		with open("db", "r") as f:
+			data = f.readlines()
+		
+		for line in data:
+			if line[:1] == "!":
+				self.groupNonce = line[1:-1]
+			else:
+				info = line.split(":")
+				self.database[info[0]] = info[1][:-1]
 
 	def test(self, token):
 		print(token)
-		conn = http.client.HTTPSConnection('172.17.0.2', 9443)
+		conn = http.client.HTTPSConnection('172.0.17.2', 9443)
 		header = {'Authorization' : 'Basic YWRtaW46YWRtaW4=', 'Content-Type' : 'application/x-www-form-urlencoded;charset=UTF-8'}
 		body = 'token=' + token
 		conn.request('POST', '/oauth2/introspect', body, header)
@@ -19,4 +30,4 @@ class Validator:
 		else:
 			return False
 
-#Validator().test("9a422138-6877-3871-a756-2363b650bbb1")
+Networker().test("toke")

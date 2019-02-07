@@ -1,10 +1,10 @@
 from flask import Flask, request, jsonify
-from Validator import Validator
+from Networker import Networker
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "9WjsiJ74/NcwpLm6MuCV9RLZygQh5V2v79Df8/QsaKQ="
 
-validator = Validator()
+networker = Networker()
 
 @app.route("/search", methods=['POST'])
 def search():
