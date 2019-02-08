@@ -1,6 +1,17 @@
 import http.client
 import json
 
+from coapthon.client.helperclient import HelperClient
+
+from Crypto.Cipher import AES
+import hashlib
+import pyotp
+
+import time
+import datetime
+import binascii
+import os
+
 class Networker:
 
 	groupNonce = "Null"
@@ -30,4 +41,26 @@ class Networker:
 		else:
 			return False
 
-Networker().test("toke")
+	def req(self, request):
+		hotp = pyotp.HOTP(self.groupNonce)
+		
+		now = time.time()
+		timeCode = int(datetime.datetime.fromtimestamp(now).strftime('%Y%H%M'))
+		timeStamp = datetime.datetime.fromtimestamp(now).strftime('%Y-%m-%d %H:%M:%S')
+
+		groupKey = hotp.at(timeCode)
+		m = hashlib.md5()
+		m.update(groupKey.encode("UTF-8"))
+		hashedKey = m.hexdigest()
+
+		IV = os.urandom(16)
+		encryptor = AES.new(hashedKey, AES.MODE_CBC, IV=IV)
+		cipherText = encryptor.encrypt(request)
+		return binascii.hexlify(cipherText).upper()
+
+		#decipher = AES.new(hashedKey, AES.MODE_CBC, IV)
+		#plainText = decipher.decrypt(cipherText)
+		#print(plainText)
+		
+
+#Networker().req("Search0000000000")

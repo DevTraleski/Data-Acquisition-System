@@ -8,7 +8,7 @@ networker = Networker()
 
 @app.route("/search", methods=['POST'])
 def search():
-	return "Sure ill check that for ya"
+	return networker.req("Search0000000000")
 
 if __name__ == "__main__":
     app.run(ssl_context=('cert.pem', 'key.pem'), host="0.0.0.0", port="4000")
