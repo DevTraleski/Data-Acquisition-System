@@ -32,7 +32,7 @@ class Networker:
 				self.database[info[0]] = info[1][:-1]
 
 	def test(self, token):
-                print(token)
+                #print(token)
                 conn = http.client.HTTPSConnection('172.0.17.2', 9443)
                 header = {'Authorization' : 'Basic YWRtaW46YWRtaW4=', 'Content-Type' : 'application/x-www-form-urlencoded;charset=UTF-8'}
                 body = 'token=' + token.split(' ')[1]
@@ -50,34 +50,34 @@ class Networker:
 		now = time.time()
 		timeCode = int(datetime.datetime.fromtimestamp(now).strftime('%Y%m%d%H%M%S'))
 		timeStamp = datetime.datetime.fromtimestamp(now).strftime('%Y-%m-%d %H:%M:%S')
-		print("Time Code: " + str(timeCode))
+		#print("Time Code: " + str(timeCode))
 
 		groupKey = hotp.at(timeCode)
 		m = hashlib.md5()
 		m.update(groupKey.encode("UTF-8"))
 		hashedKey = m.hexdigest()[:16]
-		print("Group Key: " + str(groupKey))
-		print("Hashed Key: " + str(hashedKey))
+		#print("Group Key: " + str(groupKey))
+		#print("Hashed Key: " + str(hashedKey))
 
 		IV = os.urandom(16)
-		print("Original IV: " + str(IV))
+		#print("Original IV: " + str(IV))
 		encryptor = AES.new(hashedKey, AES.MODE_CBC, IV=IV)
 		length = 16 - (len(request) % 16)
 		data = bytes([length])*length
 		request += data.decode("utf-8")
-		print("Request with padding: " + request)
+		#print("Request with padding: " + request)
 		cipherText = encryptor.encrypt(request)
-		print("Original Data: " + str(cipherText))
+		#print("Original Data: " + str(cipherText))
 		return self.send(binascii.hexlify(cipherText).upper(), timeStamp, binascii.hexlify(IV).upper())
 
 	def send(self, data, timestamp, iv):
-		print("Hexed Data: " + str(data))
-		print("Hexed IV: " + str(iv))
+		#print("Hexed Data: " + str(data))
+		#print("Hexed IV: " + str(iv))
 		client = HelperClient(server=("224.0.1.187", 5001))
 		
 		dict = { "data" : str(data)[2:-1], "timestamp": timestamp, "iv": str(iv)[2:-1] }
 		jsonStr = json.dumps(dict)
-		print(jsonStr)	
+		#print(jsonStr)	
 	
 		request = Request()
 		request.destination = client.server
@@ -85,15 +85,13 @@ class Networker:
 		request.uri_path = 'info/'
 		request.payload = jsonStr
 
-		response = client.send_request(request)
+		client.send_request(request)
 		client.stop()
 
-		print("Response: " + response.pretty_print())
-		return response.payload
-		
-		
+		return "Sended"
 
-print(Networker().req("infox"))
+
+#print(Networker().req("infox"))
 
 #decipher = AES.new(hashedKey, AES.MODE_CBC, IV)
 #plainText = decipher.decrypt(cipherText)

@@ -1,8 +1,10 @@
-from flask import Flask, request, jsonify
+from coapthon.resources.resource import Resource
+from coapthon.server.coap import CoAP
 from Networker import Networker
+from flask import Flask, request
+import _thread
 
-app = Flask(__name__)
-app.config["SECRET_KEY"] = "9WjsiJ74/NcwpLm6MuCV9RLZygQh5V2v79Df8/QsaKQ="
+app = Flask("Gateway")
 
 networker = Networker()
 
@@ -15,5 +17,38 @@ def search():
 		return "Token expired or invalid"
 	return networker.req(req)
 
+
+class Respond(Resource):
+	def __init__(self, name="Respond", coap_server=None):
+		super(Respond, self).__init__(name, coap_server, visible=True, observable=True, allow_children=True)
+		
+	def render_POST(self, request):
+		print(request.pretty_print())
+		return self
+
+class CoAPServer(CoAP):
+	def __init__(self, host, port):
+		CoAP.__init__(self, (host, port))
+		self.add_resource('respond/', Respond())
+
+def runCoap():
+	server = CoAPServer("0.0.0.0", 1337)
+	try:
+		server.listen(10)
+	except KeyboardInterrupt:
+		print ("Server Shutdown")
+		server.close()
+		print("Exiting...")
+
+def runRest():
+	app.run(ssl_context=('cert.pem', 'key.pem'), host="0.0.0.0", port="4000")
+
+def main():
+	_thread.start_new_thread(runCoap, ())
+	_thread.start_new_thread(runRest, ())
+
+	while 1:
+		pass
+
 if __name__ == "__main__":
-    app.run(ssl_context=('cert.pem', 'key.pem'), host="0.0.0.0", port="4000")
+	main()
