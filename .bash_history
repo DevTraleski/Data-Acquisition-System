@@ -338,3 +338,9 @@ python3 main.py
 nano main.py 
 python3 main.py 
 exit
+cd
+git add -all .
+git add --all .
+git commit -m "Criado servidor que vai receber as repostas dos aparelhos"
+git push
+exit

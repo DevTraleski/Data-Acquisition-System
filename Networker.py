@@ -10,15 +10,21 @@ from Crypto.Cipher import AES
 import hashlib
 import pyotp
 
+import socket
 import time
 import datetime
 import binascii
 import os
 
+#DTLS
+import ssl
+from dtls.wrapper import wrap_client
+
 class Networker:
 
 	groupNonce = "Null"
 	database = {}
+	CA_CERT = "clientCert.pem"
 
 	def __init__(self):
 		with open("db", "r") as f:
@@ -31,8 +37,15 @@ class Networker:
 				info = line.split(":")
 				self.database[info[0]] = info[1][:-1]
 
+	##DTLS Funcs
+	def _cb_ignore_read_exception(self, exception, client):
+		return False
+
+	def _cb_ignore_write_exception(self, exception, client):
+		return False
+
+
 	def test(self, token):
-                #print(token)
                 conn = http.client.HTTPSConnection('172.0.17.2', 9443)
                 header = {'Authorization' : 'Basic YWRtaW46YWRtaW4=', 'Content-Type' : 'application/x-www-form-urlencoded;charset=UTF-8'}
                 body = 'token=' + token.split(' ')[1]
@@ -50,34 +63,41 @@ class Networker:
 		now = time.time()
 		timeCode = int(datetime.datetime.fromtimestamp(now).strftime('%Y%m%d%H%M%S'))
 		timeStamp = datetime.datetime.fromtimestamp(now).strftime('%Y-%m-%d %H:%M:%S')
-		#print("Time Code: " + str(timeCode))
 
 		groupKey = hotp.at(timeCode)
 		m = hashlib.md5()
 		m.update(groupKey.encode("UTF-8"))
 		hashedKey = m.hexdigest()[:16]
-		#print("Group Key: " + str(groupKey))
-		#print("Hashed Key: " + str(hashedKey))
 
 		IV = os.urandom(16)
-		#print("Original IV: " + str(IV))
 		encryptor = AES.new(hashedKey, AES.MODE_CBC, IV=IV)
 		length = 16 - (len(request) % 16)
 		data = bytes([length])*length
 		request += data.decode("utf-8")
-		#print("Request with padding: " + request)
 		cipherText = encryptor.encrypt(request)
-		#print("Original Data: " + str(cipherText))
 		return self.send(binascii.hexlify(cipherText).upper(), timeStamp, binascii.hexlify(IV).upper())
 
 	def send(self, data, timestamp, iv):
-		#print("Hexed Data: " + str(data))
-		#print("Hexed IV: " + str(iv))
-		client = HelperClient(server=("224.0.1.187", 5001))
+		#Set up client DTLS socket
+		cipher = "ALL"
+		cipher = str(cipher.encode('ascii'))
+		print(cipher)
+		sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+		sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+		sock = wrap_client(sock,
+				cert_reqs=ssl.CERT_REQUIRED,
+				ca_certs=self.CA_CERT,
+				ciphers=cipher,
+				do_handshake_on_connect=False)
+
+		client = HelperClient(server=("224.0.1.187", 5001),
+				sock=sock,
+				cb_ignore_read_exception=self._cb_ignore_read_exception,
+				cb_ignore_write_exception=self._cb_ignore_write_exception)
 		
+		#Setup request and content
 		dict = { "data" : str(data)[2:-1], "timestamp": timestamp, "iv": str(iv)[2:-1] }
 		jsonStr = json.dumps(dict)
-		#print(jsonStr)	
 	
 		request = Request()
 		request.destination = client.server
@@ -91,8 +111,4 @@ class Networker:
 		return "Sended"
 
 
-#print(Networker().req("infox"))
-
-#decipher = AES.new(hashedKey, AES.MODE_CBC, IV)
-#plainText = decipher.decrypt(cipherText)
-#print(plainText)
+print(Networker().req("infox"))

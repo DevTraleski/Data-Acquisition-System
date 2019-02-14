@@ -1,0 +1,139 @@
+Metadata-Version: 2.0
+Name: dependency-check
+Version: 0.2.0
+Summary: Shim to easily install OWASP dependency-check-cli into Python projects
+Home-page: https://github.com/jhermann/dependency-check-py
+Author: Jürgen Hermann
+Author-email: jh@web.de
+License: Apache 2.0
+Keywords: owasp,security,vulnerability,quality-assurance
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 2
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.4
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Information Technology
+Classifier: Intended Audience :: System Administrators
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Security
+Classifier: Topic :: Software Development :: Quality Assurance
+Classifier: Topic :: Utilities
+
+Overview
+--------
+
+``dependency-check`` scans application dependencies and checks whether they contain any published vulnerabilities
+(based on the NIST `NVD`_).
+It runs in the JVM, so you need some form of ``java`` available in your ``PATH``.
+The script should work on Linux, Mac OSX and Windows, but right now is only tested on Linux.
+
+
+Usage
+-----
+
+After installation, you'll have the ``dependency-check`` command available that, on first use,
+will automatically download and install the OWASP release archive once for all projects.
+It'll then redirect any calls to that installation, meaning the downloaded NVD data is shared
+amongst projects.
+Please see the `DependencyCheck site`_ for more configuration and usage details.
+
+To install from PyPI, add ``dependency-check`` to your ``dev-requirements.txt``
+or a similar file. For more installation options, see the next section.
+
+To just get the ``dependency-check`` CLI tool installed into your home,
+independant of any project, you can use the `pip script installer`_ or
+``pip install --user dependency-check``.
+
+ |Installation Demo|
+
+
+Customization
+-------------
+
+Using environment variables, you can change the version and download location of the release archive,
+and the directory for the local installation.
+
+=============================== ==============================================================================================
+Variable                        Default
+=============================== ==============================================================================================
+``DEPENDENCY_CHECK_VERSION``    ``2.1.1``
+``DEPENDENCY_CHECK_URL``        ``https://bintray.com/artifact/download/jeremy-long/owasp/dependency-check-{version}-release.zip``
+``DEPENDENCY_CHECK_HOME``       ``~/.local/dependency-check``
+``DEPENDENCY_CHECK_NVD_URL``    *Use NIST NVD URLs*
+=============================== ==============================================================================================
+
+To update to a new version of the OWASP software,
+delete ``~/.local/dependency-check/bin/``,
+set ``DEPENDENCY_CHECK_VERSION`` to the new version number,
+and call ``dependency-check``.
+
+The variable ``DEPENDENCY_CHECK_NVD_URL`` can be used to point to a local copy of the various NVD feeds,
+in a flat hierarchy with uncompressed XML files
+(if you set this, the options ``--cveUrl12Modified``, ``--cveUrl20Modified``, ``--cveUrl12Base``, and
+``--cveUrl20Base`` will be added to each call).
+
+
+Installation
+------------
+
+*dependency-check* can be installed via ``pip install dependency-check`` as usual,
+see `releases <https://github.com/jhermann/dependency-check-py/releases>`_ for an overview of available versions.
+To get a bleeding-edge version from source, use these commands::
+
+    repo="jhermann/dependency-check-py"
+    pip install -r "https://raw.githubusercontent.com/$repo/master/requirements.txt"
+    pip install -U -e "git+https://github.com/$repo.git#egg=dependency-check"
+
+As a developer, to create a working directory for this project, call these commands::
+
+    git clone "https://github.com/jhermann/dependency-check-py.git"
+    cd "dependency-check-py"
+    . .env --yes --develop
+    invoke build check
+
+You might also need to follow some
+`setup procedures <https://py-generic-project.readthedocs.io/en/latest/installing.html#quick-setup>`_
+to make the necessary basic commands available on *Linux*, *Mac OS X*, and *Windows*.
+
+
+Other Python Security Tools
+---------------------------
+
+* `openstack/bandit`_ – Security linter designed to find common security issues in Python code, by static AST analysis.
+* `pyupio/safety`_ – Safety checks your installed dependencies for known security vulnerabilities.
+
+  * `pyupio/safety-db`_ – A curated database of security vulnerabilities in Python packages.
+
+.. _`openstack/bandit`: https://github.com/openstack/bandit
+.. _`pyupio/safety`: https://github.com/pyupio/safety
+.. _`pyupio/safety-db`: https://github.com/pyupio/safety-db
+
+.. _`NVD`: https://nvd.nist.gov/
+.. _`OWASP dependency-check-cli`: https://github.com/jeremylong/dependencycheck#dependency-check
+.. _`DependencyCheck site`: https://www.owasp.org/index.php/OWASP_Dependency_Check
+.. _`pip script installer`: https://github.com/mitsuhiko/pipsi#pipsi
+
+.. |Installation Demo| image:: https://raw.githubusercontent.com/jhermann/dependency-check-py/master/dependency_check.gif
+
+.. |Travis CI| image:: https://api.travis-ci.org/jhermann/dependency-check-py.svg
+    :target: https://travis-ci.org/jhermann/dependency-check-py
+.. |Coveralls| image:: https://img.shields.io/coveralls/jhermann/dependency-check-py.svg
+    :target: https://coveralls.io/r/jhermann/dependency-check-py
+.. |GitHub Issues| image:: https://img.shields.io/github/issues/jhermann/dependency-check-py.svg
+    :target: https://github.com/jhermann/dependency-check-py/issues
+.. |License| image:: https://img.shields.io/pypi/l/dependency-check.svg
+    :target: https://github.com/jhermann/dependency-check-py/blob/master/LICENSE
+.. |Development Status| image:: https://pypip.in/status/dependency-check/badge.svg
+    :target: https://pypi.python.org/pypi/dependency-check/
+.. |Latest Version| image:: https://img.shields.io/pypi/v/dependency-check.svg
+    :target: https://pypi.python.org/pypi/dependency-check/
+.. |Download format| image:: https://pypip.in/format/dependency-check/badge.svg
+    :target: https://pypi.python.org/pypi/dependency-check/
+.. |Downloads| image:: https://img.shields.io/pypi/dw/dependency-check.svg
+    :target: https://pypi.python.org/pypi/dependency-check/
+
