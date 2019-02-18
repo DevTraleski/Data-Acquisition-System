@@ -17,19 +17,27 @@ def search():
 		return "Token expired or invalid"
 	return networker.req(req)
 
+class Setup(Resource):
+	def __init__(self, name="Setup", coap_server=None):
+		super(Setup, self).__init__(name, coap_server, visible=True, observable=True, allow_children=True)
+
+	def render_GET(self, request):
+		self.payload = networker.setup(request)
+		return self
 
 class Respond(Resource):
 	def __init__(self, name="Respond", coap_server=None):
 		super(Respond, self).__init__(name, coap_server, visible=True, observable=True, allow_children=True)
 		
 	def render_POST(self, request):
-		print(request.pretty_print())
+		networker.respond(request)
 		return self
 
 class CoAPServer(CoAP):
 	def __init__(self, host, port):
 		CoAP.__init__(self, (host, port))
 		self.add_resource('respond/', Respond())
+		self.add_resource('setup/', Setup())
 
 def runCoap():
 	server = CoAPServer("0.0.0.0", 1337)

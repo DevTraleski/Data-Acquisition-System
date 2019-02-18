@@ -15,35 +15,35 @@ import time
 import datetime
 import binascii
 import os
-
-#DTLS
-import ssl
-from dtls.wrapper import wrap_client
+import _thread
 
 class Networker:
 
 	groupNonce = "Null"
 	database = {}
-	CA_CERT = "clientCert.pem"
+
+	expected = 0
+	received = 0
+	responses = {}
+	
+	timeOutStamp = "Null"
 
 	def __init__(self):
+		self.loadDB()		
+
+	def loadDB(self):
 		with open("db", "r") as f:
 			data = f.readlines()
-		
+
 		for line in data:
 			if line[:1] == "!":
 				self.groupNonce = line[1:-1]
 			else:
 				info = line.split(":")
 				self.database[info[0]] = info[1][:-1]
-
-	##DTLS Funcs
-	def _cb_ignore_read_exception(self, exception, client):
-		return False
-
-	def _cb_ignore_write_exception(self, exception, client):
-		return False
-
+		self.expected = len(self.database)
+		f.close()
+		
 
 	def test(self, token):
                 conn = http.client.HTTPSConnection('172.0.17.2', 9443)
@@ -78,22 +78,7 @@ class Networker:
 		return self.send(binascii.hexlify(cipherText).upper(), timeStamp, binascii.hexlify(IV).upper())
 
 	def send(self, data, timestamp, iv):
-		#Set up client DTLS socket
-		cipher = "ALL"
-		cipher = str(cipher.encode('ascii'))
-		print(cipher)
-		sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-		sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-		sock = wrap_client(sock,
-				cert_reqs=ssl.CERT_REQUIRED,
-				ca_certs=self.CA_CERT,
-				ciphers=cipher,
-				do_handshake_on_connect=False)
-
-		client = HelperClient(server=("224.0.1.187", 5001),
-				sock=sock,
-				cb_ignore_read_exception=self._cb_ignore_read_exception,
-				cb_ignore_write_exception=self._cb_ignore_write_exception)
+		client = HelperClient(server=("224.0.1.187", 5001))
 		
 		#Setup request and content
 		dict = { "data" : str(data)[2:-1], "timestamp": timestamp, "iv": str(iv)[2:-1] }
@@ -107,8 +92,100 @@ class Networker:
 
 		client.send_request(request)
 		client.stop()
+		
+		self.timeOutStamp = time.time()
+		_thread.start_new_thread(self.checkIfShouldSend, ())
 
 		return "Sended"
 
+	
+	def respond(self, request):
+		print("=========================== Received ========================================")
+		self.timeOutStamp = time.time()
 
-print(Networker().req("infox"))
+		jsonStr = request.payload
+		dict = json.loads(jsonStr)
+
+		decipher = AES.new(self.database[dict['serial']], AES.MODE_CBC, binascii.unhexlify(dict['iv']))
+		unhexData = binascii.unhexlify(dict['data'])
+		plainText = decipher.decrypt(unhexData)
+		plainText = plainText[:-plainText[-1]]
+
+		#Value, encrypt, json, return
+		data = plainText.decode("utf-8")
+		dict = json.loads(data)
+
+		print(dict)
+		
+		data = dict['data']
+		timestamp = dict['timestamp']
+		iv = dict['iv']
+		serial = dict['serial']
+
+		dados = { 'data' : data,
+			'timestamp' : timestamp,
+			'iv' : iv,
+			'serial' : serial }
+		payload = json.dumps(dados)
+		print("============================================================================")
+		self.responses[serial] = payload		
+		self.received = len(self.responses)
+		
+		return "OK"
+
+	def checkIfShouldSend(self):
+		print("CheckIfShouldSend Log =============================")
+		print("Received: " + str(self.received))
+		print("Expected: " + str(self.expected))
+		print("Timeout: " + str(time.time() - self.timeOutStamp))
+		print(self.responses)
+
+		if(self.received == self.expected or (time.time() - self.timeOutStamp) > 5):
+			self.forward()
+		else:
+			time.sleep(2)
+			self.checkIfShouldSend()
+
+	def forward(self):
+		if(self.received) > 0:
+			print('Forward')
+			connection = http.client.HTTPSConnection('172.0.17.4', 5000)
+			header = {'Content-Type' : 'application/x-www-form-urlencoded;charset=UTF-8'}
+			body = 'res=' + json.dumps(self.responses)
+			connection.request('GET', '/response', body, header)
+			response = connection.getresponse()
+			print(response.read().decode('utf-8'))
+		else:
+			print('Nobody replied, try again?')
+
+	def setup(self, request):
+		self.loadDB()
+
+		serial = request.payload
+		
+		if serial in self.database.keys():
+			print("Serial already registered")
+			return '{"error":"Serial already registered"}'
+		else:
+			dtlsk = str(binascii.hexlify(os.urandom(16)).upper())[2:-1]
+
+
+			connection = http.client.HTTPSConnection('172.0.17.4', 5000)
+			header = {'Content-Type' : 'application/x-www-form-urlencoded;charset=UTF-8'}
+			body = 'gnonce=' + self.groupNonce + '&dtlsk=' + dtlsk + '&gateway=gateway_a&serial=' + serial
+			connection.request('GET', '/setup', body, header)
+			response = connection.getresponse()
+		
+			payload = response.read().decode('utf-8')
+
+			dict = json.loads(payload)
+			if 'error' in dict.keys():
+				return payload
+			else:
+				db = open("db", "a")
+				db.write(serial + ":" + dtlsk + "\n")
+				db.close()
+				return payload
+		
+
+#print(Networker().req("infox"))
