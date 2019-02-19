@@ -25,6 +25,14 @@ class Setup(Resource):
 		self.payload = networker.setup(request)
 		return self
 
+class Alert(Resource):
+	def __init__(self, name="Alert", coap_server=None):
+		super(Alert, self).__init__(name, coap_server, visible=True, observable=True, allow_children=True)
+
+	def render_POST(self, request):
+		networker.sendAlert(request)
+		return self
+
 class Respond(Resource):
 	def __init__(self, name="Respond", coap_server=None):
 		super(Respond, self).__init__(name, coap_server, visible=True, observable=True, allow_children=True)
@@ -38,6 +46,7 @@ class CoAPServer(CoAP):
 		CoAP.__init__(self, (host, port))
 		self.add_resource('respond/', Respond())
 		self.add_resource('setup/', Setup())
+		self.add_resource('alert/', Alert())
 
 def runCoap():
 	server = CoAPServer("0.0.0.0", 1337)

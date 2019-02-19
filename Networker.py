@@ -98,11 +98,7 @@ class Networker:
 
 		return "Sended"
 
-	
-	def respond(self, request):
-		print("=========================== Received ========================================")
-		self.timeOutStamp = time.time()
-
+	def _decrypt(self, request):
 		jsonStr = request.payload
 		dict = json.loads(jsonStr)
 
@@ -112,7 +108,15 @@ class Networker:
 		plainText = plainText[:-plainText[-1]]
 
 		#Value, encrypt, json, return
-		data = plainText.decode("utf-8")
+		return plainText.decode("utf-8")
+
+
+
+	def respond(self, request):
+		print("=========================== Received ========================================")
+		self.timeOutStamp = time.time()
+
+		data = self._decrypt(request)
 		dict = json.loads(data)
 
 		print(dict)
@@ -132,6 +136,16 @@ class Networker:
 		self.received = len(self.responses)
 		
 		return "OK"
+
+	def sendAlert(self, request):
+		payload = self._decrypt(request)
+		print("Alert!")
+		connection = http.client.HTTPSConnection('172.0.17.4', 5000)
+		header = {'Content-Type' : 'application/x-www-form-urlencoded;charset=UTF-8'}
+		body = 'alert=' + payload
+		connection.request('POST', '/alert', body, header)
+		response = connection.getresponse()
+		print(response.read().decode('utf-8'))
 
 	def checkIfShouldSend(self):
 		print("CheckIfShouldSend Log =============================")
@@ -185,6 +199,8 @@ class Networker:
 				db = open("db", "a")
 				db.write(serial + ":" + dtlsk + "\n")
 				db.close()
+
+				self.loadDB()
 				return payload
 		
 

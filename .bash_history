@@ -1,10 +1,4 @@
 nano Networker.py 
-exit
-cd
-ls
-cat Networker.py 
-less Networker.py 
-nano Networker.py 
 python3 Networker.py 
 nano Networker.py 
 python3 Networker.py 
@@ -497,4 +491,10 @@ python3 main.py
 nano db 
 python3 main.py 
 cat db 
+exit
+cd
+ls
+git add --all .
+git commit -m "GetInfo and Setup implemented"
+git push
 exit
