@@ -142,7 +142,7 @@ class Networker:
 		print("Alert!")
 		connection = http.client.HTTPSConnection('172.0.17.4', 5000)
 		header = {'Content-Type' : 'application/x-www-form-urlencoded;charset=UTF-8'}
-		body = 'alert=' + payload
+		body = 'alert=' + payload + '&gateway=gateway_a'
 		connection.request('POST', '/alert', body, header)
 		response = connection.getresponse()
 		print(response.read().decode('utf-8'))

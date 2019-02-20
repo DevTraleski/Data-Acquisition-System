@@ -1,43 +1,3 @@
-nano Networker.py 
-python3 Networker.py 
-nano Networker.py 
-python3 Networker.py 
-nano Networker.py 
-python3 Networker.py 
-nano Networker.py 
-python3 Networker.py 
-nano Networker.py 
-python3 Networker.py 
-nano Networker.py 
-python3 Networker.py 
-nano Networker.py 
-python3 Networker.py 
-nano Networker.py 
-python3 Networker.py 
-nano Networker.py 
-python3 Networker.py 
-nano Networker.py 
-python3 Networker.py 
-python3 Networker.py 
-nano Networker.py 
-nano db
-nano Networker.py 
-exit
-cd
-ls
-git add --all .
-git commit -m "Managed to send multicast, and encrypt everythin"
-git commit -m "Managed to send multicast, and encrypt everythin"
-git push
-git config --global push.default simple
-exit
-cd
-ls
-top
-exit
-cd
-ls
-nano Networker.py 
 exit
 cd
 nano Networker.py 
@@ -496,5 +456,45 @@ cd
 ls
 git add --all .
 git commit -m "GetInfo and Setup implemented"
+git push
+exit
+cd
+ls
+python3 main.py 
+ls
+cat db 
+python3 main.py 
+ifconfig
+python3 main.py 
+nano db 
+python3 main.py 
+ls
+nano Networker.py 
+nano db 
+python3 main.py 
+nano db 
+python3 main.py 
+nano db 
+python3 main.py 
+nano db 
+python3 main.py 
+nano db 
+python3 main.py 
+ls
+nano main.py 
+nano Networker.py 
+python3 main.py 
+ls
+nano Networker.py 
+nano Networker.py 
+nano Networker.py 
+nano main.py 
+nano Networker.py 
+nano main.py 
+python3 main.py 
+nano Networker.py 
+ls
+git add --all .
+git commit -m "Implementacao do alert"
 git push
 exit
