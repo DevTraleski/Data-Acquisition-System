@@ -113,13 +113,10 @@ class Networker:
 
 
 	def respond(self, request):
-		print("=========================== Received ========================================")
 		self.timeOutStamp = time.time()
 
 		data = self._decrypt(request)
 		dict = json.loads(data)
-
-		print(dict)
 		
 		data = dict['data']
 		timestamp = dict['timestamp']
@@ -131,7 +128,6 @@ class Networker:
 			'iv' : iv,
 			'serial' : serial }
 		payload = json.dumps(dados)
-		print("============================================================================")
 		self.responses[serial] = payload		
 		self.received = len(self.responses)
 		
@@ -139,21 +135,13 @@ class Networker:
 
 	def sendAlert(self, request):
 		payload = self._decrypt(request)
-		print("Alert!")
 		connection = http.client.HTTPSConnection('172.0.17.4', 5000)
 		header = {'Content-Type' : 'application/x-www-form-urlencoded;charset=UTF-8'}
 		body = 'alert=' + payload + '&gateway=gateway_a'
 		connection.request('POST', '/alert', body, header)
 		response = connection.getresponse()
-		print(response.read().decode('utf-8'))
 
 	def checkIfShouldSend(self):
-		print("CheckIfShouldSend Log =============================")
-		print("Received: " + str(self.received))
-		print("Expected: " + str(self.expected))
-		print("Timeout: " + str(time.time() - self.timeOutStamp))
-		print(self.responses)
-
 		if(self.received == self.expected or (time.time() - self.timeOutStamp) > 5):
 			self.forward()
 		else:
@@ -161,20 +149,17 @@ class Networker:
 			self.checkIfShouldSend()
 
 	def forward(self):
+		print("Expected: " + str(self.expected) + "\nReceived: " + str(self.received))
 		if(self.received) > 0:
-			print('Forward')
 			connection = http.client.HTTPSConnection('172.0.17.4', 5000)
 			header = {'Content-Type' : 'application/x-www-form-urlencoded;charset=UTF-8'}
 			body = 'res=' + json.dumps(self.responses)
 			connection.request('GET', '/response', body, header)
 			response = connection.getresponse()
-			print(response.read().decode('utf-8'))
 		else:
 			print('Nobody replied, try again?')
 
 	def setup(self, request):
-		self.loadDB()
-
 		serial = request.payload
 		
 		if serial in self.database.keys():
@@ -182,7 +167,6 @@ class Networker:
 			return '{"error":"Serial already registered"}'
 		else:
 			dtlsk = str(binascii.hexlify(os.urandom(16)).upper())[2:-1]
-
 
 			connection = http.client.HTTPSConnection('172.0.17.4', 5000)
 			header = {'Content-Type' : 'application/x-www-form-urlencoded;charset=UTF-8'}

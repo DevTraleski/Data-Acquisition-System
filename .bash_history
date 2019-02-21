@@ -1,29 +1,3 @@
-exit
-cd
-nano Networker.py 
-exit
-cd
-ls
-nano Networker.py 
-exit
-cd
-ls
-nano Networker.py 
-cd /usr/local/lib/python3.4/dist-packages/coapthon/client/
-ls
-nano helperclient.py 
-exit
-cd
-ls
-python3 main.py 
-nano /usr/local/lib/python3.4/dist-packages/coapthon/client/helperclient.py 
-python3 main.py 
-nano /usr/local/lib/python3.4/dist-packages/coapthon/client/helperclient.py 
-python3 main.py 
-nano /usr/local/lib/python3.4/dist-packages/coapthon/client/helperclient.py 
-python3 main.py 
-nano /usr/local/lib/python3.4/dist-packages/coapthon/client/helperclient.py 
-python3 main.py 
 nano /usr/local/lib/python3.4/dist-packages/coapthon/client/helperclient.py 
 python3 main.py 
 nano Networker.py 
@@ -497,4 +471,30 @@ ls
 git add --all .
 git commit -m "Implementacao do alert"
 git push
+exit
+cd
+ls
+nano Networker.py 
+python3 main.py 
+ls
+nano Networker.py 
+python3 main.py 
+l
+ls
+nano db 
+cat db 
+ifconfig
+python3 main.py 
+ifconfig
+python3 main.py 
+nano db 
+python3 main.py 
+ifconfig
+python3 main.py 
+ls
+git add --all .
+git commit -m "Prototipo pronto"
+git push
+exit
+ifconfig
 exit
