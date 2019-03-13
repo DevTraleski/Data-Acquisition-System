@@ -5,6 +5,23 @@ from flask import Flask, request
 import _thread
 import time
 import logging
+from logging.config import dictConfig
+
+dictConfig({
+    'version': 1,
+    'formatters': {'default': {
+        'format': '',
+    }},
+    'handlers': {'wsgi': {
+        'class': 'logging.StreamHandler',
+        'stream': 'ext://flask.logging.wsgi_errors_stream',
+        'formatter': 'default'
+    }},
+    'root': {
+        'level': 'ERROR',
+        'handlers': ['wsgi']
+    }
+})
 
 app = Flask("Gateway")
 

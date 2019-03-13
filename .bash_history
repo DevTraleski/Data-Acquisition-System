@@ -1,167 +1,3 @@
-nano /usr/local/lib/python3.4/dist-packages/coapthon/client/helperclient.py 
-python3 main.py 
-nano Networker.py 
-nano main.py 
-nano /usr/local/lib/python3.4/dist-packages/coapthon/client/helperclient.py 
-nano main.py 
-nano Networker.py 
-python3 main.py 
-nano /usr/local/lib/python3.4/dist-packages/coapthon/client/helperclient.py 
-nano Networker.py 
-python3 main.py 
-python3 main.py 
-ls
-nano Networker.py 
-python3 main.py 
-python3 main.py 
-nano Networker.py 
-python3 main.py 
-nano Networker.py 
-python3 main.py 
-nano Networker.py 
-python3 main.py 
-python3 main.py 
-nano Networker.py 
-python3 main.py 
-nano Networker.py 
-python3 main.py 
-nano Networker.py 
-python3 main.py 
-nano Networker.py 
-python3 main.py 
-nano Networker.py 
-python3 main.py 
-nano Networker.py 
-python3 main.py 
-python3 main.py 
-nano Networker.py 
-python3 main.py 
-nano Networker.py 
-python3 main.py 
-python3 main.py 
-nano Networker.py 
-python3 main.py 
-nano Networker.py 
-python3 main.py 
-nano Networker.py 
-nano main.py 
-exit
-cd
-ls
-nano Networker.py 
-nano main.py 
-python3 main.py 
-nano main.py 
-python3 main.py 
-nano main.py 
-python3 main.py 
-nano main.py 
-python3 main.py 
-nano main.py 
-python3 main.py 
-nano main.py 
-python3 main.py 
-nano main.py 
-python3 main.py 
-nano main.py 
-python3 main.py 
-nano main.py 
-top
-ls
-exit
-cd
-exit
-cd
-ls
-nano main.py 
-python3 main.py 
-top
-ls
-nano main.py 
-python3 main.py 
-nano main.py 
-python3 main.py 
-exit
-cd
-ls
-python3 main.py 
-ls
-nano Networker.py 
-nano main.py 
-python3 main.py 
-nano main.py 
-python3 main.py 
-nao main.py 
-nano main.py 
-nao main.py 
-python3 main.py 
-nano Networker.py 
-python3 main.py 
-nano main.py 
-python3 main.py 
-nano main.py 
-python3 main.py 
-nano main.py 
-python3 main.py 
-exit
-cd
-git add -all .
-git add --all .
-git commit -m "Criado servidor que vai receber as repostas dos aparelhos"
-git push
-exit
-cd
-git add --all .
-git commit -m "Dealing with mf certificate for dtls"
-ls
-cd ..
-ls
-cd Gateway/
-ls
-git push
-exit
-cd
-ls
-nano Networker.py 
-cat clientCert.pem 
-ls
-python3 Networker.py 
-nano /usr/local/lib/python3.4/dist-packages/Dtls-1.2.3-py3.4.egg/dtls/sslconnection.py 
-ls
-cat clientCert.pem 
-cat clientKey.pem 
-nano Networker.py 
-nano clientCert.pem 
-cat clientCert.pem 
-ls
-python3 Networker.py 
-nano Networker.py 
-python3 Networker.py 
-nano Networker.py 
-python3 Networker.py 
-python3
-cd /usr/lib/python3.4/plat-x86_64-linux-gnu
-ls
-cd ..
-ls
-nano ssl.py 
-cd
-ls
-nano Networker.py 
-python3 Networker.py 
-nano Networker.py 
-nano Networker.py 
-openssl -printcert
-ls
-keytool -printcert -v -file clientCert.pem 
-nano /usr/local/lib/python3.4/dist-packages/Dtls-1.2.3-py3.4.egg/dtls/sslconnection.py 
-openssl ciphers -v 'RSA'
-openssl cipher -v 'PSK'
-openssl ciphers -v 'PSK'
-openssl ciphers -v 'PSK:!RSA'
-clear
-openssl ciphers -v 'PSK:!RSA'
-openssl ciphers -v 'PSK:+RSA'
 openssl ciphers -v 'PSK:!aRSA'
 clear
 openssl ciphers -v 'PSK:!aRSA'
@@ -497,4 +333,168 @@ git commit -m "Prototipo pronto"
 git push
 exit
 ifconfig
+exit
+cd
+pytho3 main.py 
+python3 main.py 
+ls
+cat db 
+python3 main.py 
+nano Networker.py 
+python3 main.py 
+nano Networker.py 
+python3 main.py 
+nano Networker.py 
+python3 main.py 
+./clean.sh 
+python3 main.py 
+./clean.sh 
+python3 main.py 
+ls
+nano main.py 
+python3 main.py 
+ls
+python3 main.py 
+nano main.py 
+python3 main.py 
+nano main.py 
+python3 main.py 
+nano main.py 
+python3 main.py 
+nano main.py 
+python3 main.py 
+ls
+git add --all .
+git commit -m "Changes for test"
+git push
+exit
+ls
+cd
+ls
+ps
+bg
+fg
+bg
+bg 1
+bg 2
+bg 3
+bg 4
+bg 5
+bg 0
+fg
+fg 1
+fg 0
+fg 2
+jobs
+jobs
+ps
+kill 2383
+ps
+kill -p 2383
+kill - 2383
+kill -p 2383
+kill -P 2383
+kill 
+kill -n 2383
+kill 2383
+ps
+ls
+exit
+cd
+ls
+python3 main.py 
+nano main.py 
+nano Networker.py 
+nano main.py 
+nano Networker.py 
+python3 main.py 
+python3 main.py 
+nano Networker.py 
+python3 main.py 
+nano db 
+python3 main.py 
+nano db 
+python3 main.py 
+./clean.sh 
+python3 main.py 
+exit
+exit
+cd
+ls
+python3 main.py 
+cat db 
+./clean.sh 
+python3 main.py 
+./clean.sh 
+python3 main.py 
+exit
+uname -a
+exit
+cd
+ls
+nano main.py 
+nano Networker.py 
+ls
+exit
+cd
+ls
+python3 main.py 
+cat db 
+./clean.sh 
+python3 main.py 
+ls
+less db 
+nano Networker.py 
+python3 main.py 
+nano db 
+python3 main.py 
+nano main.py 
+python3 main.py 
+nano Networker.py 
+python3 main.py 
+exit
+cd
+ls
+python3 main.py 
+./clean.sh 
+python3 main.py 
+exit
+ls
+cd
+python3 main.py 
+./clean.sh 
+python3 main.py 
+./clean.sh 
+python3 main.py 
+./clean.sh 
+python3 main.py 
+nano db 
+python3 main.py 
+./clean.sh 
+python3 main.py 
+ls
+./clean.sh 
+python3 main.py 
+ls
+nano Networker.py 
+python3 main.py 
+ls
+less db 
+python3 main.py 
+nano Networker.py
+python3 main.py 
+./clean.sh 
+cat db 
+python3 main.py 
+cat db 
+./clean.sh 
+cat db 
+python3 main.py 
+cat db 
+./clean.sh 
+python3 main.py 
+cat db 
+python3 main.py 
+ls
+./clean.sh 
 exit

@@ -142,7 +142,7 @@ class Networker:
 		response = connection.getresponse()
 
 	def checkIfShouldSend(self):
-		if(self.received == self.expected or (time.time() - self.timeOutStamp) > 5):
+		if(self.received == self.expected or (time.time() - self.timeOutStamp) > 10):
 			self.forward()
 		else:
 			time.sleep(2)
@@ -156,6 +156,8 @@ class Networker:
 			body = 'res=' + json.dumps(self.responses)
 			connection.request('GET', '/response', body, header)
 			response = connection.getresponse()
+			self.responses = {}
+			self.received = 0
 		else:
 			print('Nobody replied, try again?')
 
