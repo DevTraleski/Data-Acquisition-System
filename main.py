@@ -92,10 +92,8 @@ def runRest():
 
 def main():
 	_thread.start_new_thread(runCoap, ())
-	_thread.start_new_thread(runRest, ())
+	runRest()
 
-	while 1:
-		pass
 
 if __name__ == "__main__":
 	main()
