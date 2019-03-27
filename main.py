@@ -27,13 +27,9 @@ app = Flask("Gateway")
 
 networker = Networker()
 
-logger = logging.getLogger("Gateway")
-logger.setLevel(logging.ERROR)
-logger.propagate = False
-
-log = logging.getLogger('werkzeug')
-log.setLevel(logging.ERROR)
-log.propagate = False
+@app.route("/reload")
+def reload():
+	return networker.reload()
 
 @app.route("/search")
 def search():
@@ -49,10 +45,8 @@ class Setup(Resource):
 		super(Setup, self).__init__(name, coap_server, visible=True, observable=True, allow_children=True)
 
 	def render_GET(self, request):
-		start = time.time()
+		print("Setup called")
 		self.payload = networker.setup(request)
-		end = time.time()
-		print("========== Setup time: " + str(end - start))
 		return self
 
 class Alert(Resource):

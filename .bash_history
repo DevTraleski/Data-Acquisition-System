@@ -1,133 +1,3 @@
-openssl ciphers -v 'PSK:!aRSA'
-clear
-openssl ciphers -v 'PSK:!aRSA'
-openssl ciphers -v 'kPSK:aPSK'
-clear
-openssl ciphers -v 'kPSK:aPSK'
-openssl ciphers -v 'kPSK:aPSK:@STRENGTH'
-clear
-openssl ciphers -v 'kPSK:aPSK:@STRENGTH'
-openssl ciphers -v 'kPSK:aPSK:eAES:@STRENGTH'
-clear
-openssl ciphers -v 'kPSK:aPSK:eAES:@STRENGTH'
-openssl ciphers -v 'kPSK:aPSK:eAES:@STRENGTH:!aNULL'
-openssl ciphers -v 'kPSK:aPSK:eAES:@STRENGTH:!eNULL'
-clear
-openssl ciphers -v 'kPSK:aPSK:eAES:@STRENGTH:!eNULL'
-openssl ciphers -v 'kPSK:aPSK:eAES128:@STRENGTH:!eNULL'
-ckear]
-clear
-ckear]
-openssl ciphers -v 'kPSK:aPSK:eAES128:@STRENGTH:!eNULL'
-openssl ciphers -v 'kPSK:aPSK:AES128:@STRENGTH:!eNULL'
-clear
-openssl ciphers -v 'kPSK:aPSK:AES128:@STRENGTH:!eNULL'
-openssl ciphers -v 'kPSK:aPSK:eAES:@STRENGTH:!eNULL'
-clear
-openssl ciphers -v 'kPSK:aPSK:eAES:@STRENGTH:!eNULL'
-openssl
-openssl
-ks
-ls
-nano Networker.py 
-python3 main.py 
-nano Networker.py 
-python3 main.py 
-exit
-cd
-ls
-rm testssl.sh 
-rm clientCert.pem 
-rm clientKey.pem 
-rm example.pem 
-ls
-cat ca_cert.pem 
-rm ca_cert.pem 
-ls
-nano Networker.py 
-nano Networker.py 
-python3 main.py 
-python3 main.py 
-nano Networker.py 
-nano main.py 
-nano Networker.py 
-nano Networker.py 
-nano db 
-nano Networker.py 
-nano db 
-nano Networker.py 
-nano db 
-nano Networker.py 
-nano db 
-nano Networker.py 
-nano main.py 
-nano Networker.py 
-python3 Networker.py 
-nano Networker.py 
-python3 Networker.py 
-nano Networker.py 
-python3 Networker.py 
-nano Networker.py 
-python3 main.py 
-nano Networker.py 
-python3 main.py 
-nano Networker.py 
-python3 main.py 
-nano Networker.py 
-python3 main.py 
-nano Networker.py 
-python3 main.py 
-nano Networker.py 
-python3 main.py 
-nano Networker.py 
-python3 main.py 
-nano Networker.py 
-python3 main.py 
-nano Networker.py 
-python3 main.py 
-nano Networker.py 
-python3 main.py 
-nano Networker.py 
-python3 main.py 
-nano Networker.py 
-python3 main.py 
-nano Networker.py 
-python3 main.py 
-nano Networker.py 
-python3 main.py 
-nano Networker.py 
-python3 main.py 
-nano Networker.py 
-python3 main.py 
-nano Networker.py 
-python3 main.py 
-nano Networker.py 
-python3 main.py 
-nano Networker.py 
-python3 main.py 
-nano Networker.py 
-python3 main.py 
-nano Networker.py 
-python3
-nano Networker.py 
-python3 main.py 
-nano Networker.py 
-python3 main.py 
-nano Networker.py 
-nano main.py 
-nano Networker.py 
-python3 main.py 
-nano Networker.py 
-python3 main.py 
-nano Networker.py 
-python3 main.py 
-nano Networker.py 
-python3 main.py 
-nano Networker.py 
-python3 main.py 
-nano Networker.py 
-nano Networker.py 
-python3 main.py 
 nano Networker.py 
 python3 main.py 
 nano Networker.py 
@@ -497,4 +367,134 @@ cat db
 python3 main.py 
 ls
 ./clean.sh 
+exit
+ls
+cd
+ls
+./clean.sh 
+python3 main.py 
+ls
+git add -all .
+git add --all .
+git commit
+./clean.sh 
+git commit
+git add db
+git commit
+git push
+git push
+exit
+cd
+ls
+nano main.py 
+ls
+cat db 
+python3 main.py 
+nano main.py 
+python3 main.py 
+nano main.py 
+python3 main.py 
+nano main.py 
+python3 main.py 
+exit
+cd
+ls
+./clean.sh 
+python3 main.py 
+python3 main.py 
+ls
+nano NEt
+nano Networker.py 
+python3 main.py 
+nano db
+python3 main.py 
+nano db 
+python3 main.py 
+ls
+./clean.sh 
+cat db 
+python3 main.py 
+nano Networker.py 
+python3 main.py 
+python3 main.py 
+ls
+nano main.py 
+nano Networker.py 
+python3 main.py 
+nano main.py 
+nano main.py 
+python3 main.py 
+nano Networker.py 
+python3 main.py 
+nano Networker.py 
+python3 main.py 
+nano Networker.py 
+python3 main.py 
+exit
+ls
+cd
+ls
+nano Networker.py 
+python3 main.py 
+./clean.sh '
+./clean.sh
+ls
+python3 main.py 
+nano Networker.py 
+./clean.sh 
+python3 main.py 
+./clean.sh 
+python3 main.py 
+ls
+nano Networker.py 
+python3 main.py 
+ls
+./clean.sh 
+python3 main.py 
+./clean.sh 
+python3 main.py 
+ls
+cat db 
+python3 main.py 
+pwd
+python3 main.py 
+ls
+nano clean.sh 
+cat db 
+python3 main.py 
+cat db 
+python3 main.py 
+cat db 
+python3 main.py 
+cat db 
+python3 main.py 
+cat db 
+python3 main.py 
+nano set
+ls
+nano clean.sh 
+nano Networker.py 
+nano main.py 
+cat db 
+nano Networker.py 
+python3 main.py 
+cat db 
+python3 main.py 
+cat db 
+python3 main.py 
+python3 main.py 
+python3 main.py 
+nano Networker.py 
+python3 main.py 
+./clean.sh 
+python3 main.py 
+./clean.sh 
+python3 main.py 
+nano Networker.py 
+python3 main.py 
+cat db 
+python3 main.py 
+./clean.sh 
+python3 main.py 
+cat db 
 exit

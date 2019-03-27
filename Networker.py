@@ -78,6 +78,9 @@ class Networker:
 		return self.send(binascii.hexlify(cipherText).upper(), timeStamp, binascii.hexlify(IV).upper())
 
 	def send(self, data, timestamp, iv):
+		self.responses = {}
+		self.received = 0
+
 		client = HelperClient(server=("224.0.1.187", 5001))
 		
 		#Setup request and content
@@ -90,13 +93,13 @@ class Networker:
 		request.uri_path = 'info/'
 		request.payload = jsonStr
 
-		client.send_request(request)
-		client.stop()
-		
 		self.timeOutStamp = time.time()
-		_thread.start_new_thread(self.checkIfShouldSend, ())
 
-		return "Sended"
+		client.send_request(request)
+		self.checkIfShouldSend()		
+		client.stop()
+
+		return json.dumps(self.responses)
 
 	def _decrypt(self, request):
 		jsonStr = request.payload
@@ -142,52 +145,44 @@ class Networker:
 		response = connection.getresponse()
 
 	def checkIfShouldSend(self):
-		if(self.received == self.expected or (time.time() - self.timeOutStamp) > 10):
-			self.forward()
-		else:
-			time.sleep(2)
-			self.checkIfShouldSend()
-
-	def forward(self):
-		print("Expected: " + str(self.expected) + "\nReceived: " + str(self.received))
-		if(self.received) > 0:
-			connection = http.client.HTTPSConnection('172.0.17.4', 5000)
-			header = {'Content-Type' : 'application/x-www-form-urlencoded;charset=UTF-8'}
-			body = 'res=' + json.dumps(self.responses)
-			connection.request('GET', '/response', body, header)
-			response = connection.getresponse()
-			self.responses = {}
-			self.received = 0
-		else:
-			print('Nobody replied, try again?')
+		# Loop with a low sleep() NO RECURSION		
+		shouldForward = False
+		counter = 0
+		while(shouldForward == False):
+			counter = counter + 1
+			if (self.received >= self.expected or (time.time() - self.timeOutStamp) >= 10):
+				shouldForward = True
+			else:
+				time.sleep(0.05)
 
 	def setup(self, request):
 		serial = request.payload
+		print("Setup " + str(serial))
+
+		dtlsk = str(binascii.hexlify(os.urandom(16)).upper())[2:-1]
+
+		connection = http.client.HTTPSConnection('172.0.17.4', 5000)
+		header = {'Content-Type' : 'application/x-www-form-urlencoded;charset=UTF-8'}
+		body = 'gnonce=' + self.groupNonce + '&dtlsk=' + dtlsk + '&gateway=gateway_a&serial=' + serial
+		connection.request('GET', '/setup', body, header)
+		response = connection.getresponse()
 		
-		if serial in self.database.keys():
-			print("Serial already registered")
-			return '{"error":"Serial already registered"}'
+		payload = response.read().decode('utf-8')
+
+		dict = json.loads(payload)
+		if 'error' in dict.keys():
+			return payload
 		else:
-			dtlsk = str(binascii.hexlify(os.urandom(16)).upper())[2:-1]
+			db = open("db", "a")
+			db.write(serial + ":" + dtlsk + "\n")
+			db.close()
 
-			connection = http.client.HTTPSConnection('172.0.17.4', 5000)
-			header = {'Content-Type' : 'application/x-www-form-urlencoded;charset=UTF-8'}
-			body = 'gnonce=' + self.groupNonce + '&dtlsk=' + dtlsk + '&gateway=gateway_a&serial=' + serial
-			connection.request('GET', '/setup', body, header)
-			response = connection.getresponse()
-		
-			payload = response.read().decode('utf-8')
-
-			dict = json.loads(payload)
-			if 'error' in dict.keys():
-				return payload
-			else:
-				db = open("db", "a")
-				db.write(serial + ":" + dtlsk + "\n")
-				db.close()
-
-				self.loadDB()
-				return payload
+			self.loadDB()
+			return payload
 		
 
+	def reload(self, request):
+		print("Reload")
+		self.loadDB()
+		return "OK"
 #print(Networker().req("infox"))
